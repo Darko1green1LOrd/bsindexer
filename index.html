@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Darko s BSIndexer</title>
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-title" content="BSIndexer" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <script src="xxtea.min.js" type="text/javascript"></script>
+        <script src="customselect.js" type="text/javascript"></script>
+        <script src="indexes_to_ids.js"></script>
+        <script src="script.js"></script>
+        <link rel="stylesheet" href="style.css">
+    <head>
+    <body onload="runonload()">
+        <div class="main">
+            <div class="control-panel">
+                <p class="sm_text bt">Boom Slingers Indexer</p>
+                <div class="btns">
+                    <button type="button" id="main_mode" class="selected" onclick="switch_mode(0)">Main</button>
+                    <button type="button" id="ret" onclick="vist_page(save_data_in_url('/'))">Return</button>
+                    <button type="button" id="info_mode" onclick="switch_mode(1)">Info</button>
+                    <button type="button" id="settings_mode" onclick="switch_mode(2)">Settings</button>
+                </div>
+            </div>
+            <div class="main_p">
+                <div class="mp">
+                    <label class="main_text newline" for="">Indexer</label>
+                    <div class="index_to_text">
+                        <label class="sub_text" for="">Character</label>
+                        <input id="char_ind_inp" type="number" min="0" value="" data-defvalue="" placeholder="Index" oninput="process_index(this)">
+                        <input id="char_txt_out" type="text" readonly>
+                    </div>
+                    <div class="index_to_text">
+                        <label class="sub_text" for="">Hat</label>
+                        <input id="hat_ind_inp" type="number" min="0" value="" data-defvalue="" placeholder="Index" oninput="process_index(this)">
+                        <input id="hat_txt_out" type="text" readonly>
+                    </div>
+                    <div class="index_to_text">
+                        <label class="sub_text" for="">Accesory</label>
+                        <input id="acce_ind_inp" type="number" min="0" value="" data-defvalue="" placeholder="Index" oninput="process_index(this)">
+                        <input id="acce_txt_out" type="text" readonly>
+                    </div>
+                    <div class="index_to_text">
+                        <label class="sub_text" for="">Name</label>
+                        <input id="name_ind_inp" type="number" min="0" value="" data-defvalue="" placeholder="Index" oninput="process_index(this)">
+                        <input id="name_txt_out" type="text" readonly>
+                    </div>
+                    <div class="index_to_text">
+                        <label class="sub_text" for="">Voice</label>
+                        <input id="voice_ind_inp" type="number" min="0" value="" data-defvalue="" placeholder="Index" oninput="process_index(this)">
+                        <input id="voice_txt_out" type="text" readonly>
+                    </div>
+                    <div class="index_to_text">
+                        <label class="sub_text" for="">Profile Picture</label>
+                        <input id="pfp_ind_inp" type="number" min="0" value="" data-defvalue="" placeholder="Index" oninput="process_index(this)">
+                        <input id="pfp_txt_out" type="text" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="pageinfo">
+                <p class="p_text">Info</p>
+                <div class="all_charcodes">
+                    <label class="info_text newline" for="all_charcodess">Info About The Page</label>
+                    <textarea readonly="readonly" id="pginfo" name="pginfo" rows="8" cols="150">Boom Slingers Indexer, meant for easier identification of ids&#13;&#10;&#13;&#10;Can show character/voice/character name/hat/accesory id to their text form</textarea>
+                    <label id="pginfo_l" class="length_txt newline" for="all_charcodess"></label>
+                </div>
+            </div>
+            <div class="settingsp">
+                <p class="s_text">Extra Settings that dont affect the encrypt and decrypt</p>
+                <div class="all_settings">
+                    <div class="autores">
+                        <label for="autores_var" >Auto Resize</label>
+                        <label class="switch">
+                            <input type="checkbox" id="autores_t" data-defvalue=true onchange="settingChanged(this)" checked>
+                            <span class="toggle"></span>
+                        </label>
+                        <span data-text="Automatically resizes some textfields based on how much space is needed" class="tooltip">?</span>
+                    </div>
+                    <div class="lengthc">
+                        <label for="lengthc_var" >Length Calculation</label>
+                        <label class="switch">
+                            <input type="checkbox" id="lengthc_t" data-defvalue=true onchange="settingChanged(this)" checked>
+                            <span class="toggle"></span>
+                        </label>
+                        <span data-text="Calculates how long the text is in some text fields" class="tooltip">?</span>
+                    </div>
+                    <div class="msgdura">
+                        <label for="msgdura_var" >Info Box Duration</label>
+                        <input type="number" min="0" max="100" value="6" data-defvalue="6" id="msgdura_v" placeholder="Cannot be Empty" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)" oninput="this.value = !!this.value && Math.abs(this.value) >= 0  && Math.abs(this.value) <= 100 ? Math.abs(this.value) : null">
+                        <span data-text="Controls default info box duration in seconds, set this to 0 to have infinite duration with manual dismissal" class="tooltip">?</span>
+                        <button type="button" id="msgdura_b" onclick="showmsg('This is a test message','Example text','With your set duration');">Test</button>
+                    </div>
+                    <div class="huer">
+                        <label for="huer_var" >Color/Hue Rotation</label>
+                        <div>
+                            <label for="huer_varman" >Manual</label>
+                            <input type="range" min="0" max="360" value="0" data-defvalue="0" class="slider" id="huer_s" oninput="settingChanged(this)">
+                            <input type="number" min="0" max="360" value="0" id="huer_v" placeholder="" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)" oninput="this.value = !!this.value && Math.abs(this.value) >= 0  && Math.abs(this.value) <= 360 ? Math.abs(this.value) : null">
+                            <span data-text="Allows you to easily change color of the site" class="tooltip">?</span>
+                        </div>
+                        <div>
+                            <label for="huer_varauto" >Auto</label>
+                            <label class="switch">
+                                <input type="checkbox" id="huer_t" data-defvalue=false onchange="settingChanged(this)">
+                                <span class="toggle"></span>
+                            </label>
+                            <input type="number" min="1" max="6000" value="100" data-defvalue="100" id="huer_vi" placeholder="" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)" oninput="this.value = !!this.value && Math.abs(this.value) >= 1  && Math.abs(this.value) <= 6000 ? Math.abs(this.value) : null">
+                            <span data-text="Set a interval(MiliSeconds) for automated color changing" class="tooltip">?</span>
+                        </div>
+                    </div>
+                    <div class="stylesel">
+                        <label for="stylesel_var" >Theme</label>
+                        <div class="custom-select" style="width:200px;">
+                            <select id="stylesel-db" data-defvalue="0">
+                                <option value="lg">Light Green</option>
+                                <option value="lg">Light Green</option>
+                                <option value="dg">Dark Green</option>
+                                <option value="c">Custom</option>
+                            </select>
+                        </div>
+                        <div class="stylesel_emergency_toggle">
+                            <label for="stylesel_vartwo" >Emergency Button Toggle</label>
+                            <label class="switch">
+                                <input type="checkbox" id="stylesel_t" data-defvalue=true onchange="settingChanged(this)" checked>
+                                <span class="toggle"></span>
+                            </label>
+                            <span data-text="Toggle to hide / show the emergency button to reset the theme in case you make the site unuseable with some color combinations" class="tooltip">?</span>
+                        </div>
+                        <div id="stylesel_div">
+                            <label class="stylesel_text newline" id="stylesel_label" for="LccMsg">Custom Theme:</label>
+                            <table id="stylesel_table">
+                                <tr>
+                                    <th>Where the color is used</th>
+                                    <th>Input</th>
+                                    <th>Color</th>
+                                </tr>
+                                <tr>
+                                    <th>Color 1 For Tooltips,Button Glow,Tables</th>
+                                    <th><input type="text" data-varid="--btn-glow_one" placeholder="Use css default" data-defvalue="rgba(44,187,99,.35)" value="rgba(44,187,99,.35)" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>Color 2 For Tooltips,Button Glow,Tables</th>
+                                    <th><input type="text" data-varid="--btn-glow_two" placeholder="Use css default" data-defvalue="rgba(44,187,99,.25)" value="rgba(44,187,99,.25)" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>Color For Tooltip background,Tables,Control</th>
+                                    <th><input type="text" data-varid="--tooltipbg-bg" placeholder="Use css default" data-defvalue="rgba(20, 55, 0, 0.7)" value="rgba(20, 55, 0, 0.7)" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>Main Color, Used for alot of things</th>
+                                    <th><input type="text" data-varid="--main-color" placeholder="Use css default" data-defvalue="#0ca21d" value="#0ca21d" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>Med Color, Used for buttons hover</th>
+                                    <th><input type="text" data-varid="--med-color" placeholder="Use css default" data-defvalue="#0ebe20" value="#0ebe20" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>Text Color, Used primarily for text</th>
+                                    <th><input type="text" data-varid="--text-color" placeholder="Use css default" data-defvalue="#aafbb5" value="#aafbb5" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>Disabled Color, Used primarily for buttons</th>
+                                    <th><input type="text" data-varid="--disabled-main" placeholder="Use css default" data-defvalue="#6ca271" value="#6ca271" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="disbledc_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Background color 1, primarily used for background</th>
+                                    <th><input type="text" data-varid="--bg-color" placeholder="Use css default" data-defvalue="#2b2d2b" value="#2b2d2b" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="bgc_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Background color 2, primarily used for background</th>
+                                    <th><input type="text" data-varid="--secondary-color" placeholder="Use css default" data-defvalue="#131413" value="#131413" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="secondc_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Background color 3, primarily used for background</th>
+                                    <th><input type="text" data-varid="--third-color" placeholder="Use css default" data-defvalue="#171817" value="#171817" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="thirdc_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Background color 4, primarily used for background</th>
+                                    <th><input type="text" data-varid="--fourth-color" placeholder="Use css default" data-defvalue="#212922" value="#212922" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="fourthc_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Selected color, primarily used for borders</th>
+                                    <th><input type="text" data-varid="--selected-color" placeholder="Use css default" data-defvalue="#000" value="#000" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="selc_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Disabled Color 2</th>
+                                    <th><input type="text" data-varid="--disabled-color" placeholder="Use css default" data-defvalue="#442323" value="#442323" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="disbledcc_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Darker Main</th>
+                                    <th><input type="text" data-varid="--darkgreen" placeholder="Use css default" data-defvalue="#0d4208" value="#0d4208" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="dgc_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Light Gray, used for dropdown menus</th>
+                                    <th><input type="text" data-varid="--lightgray" placeholder="Use css default" data-defvalue="#373737" value="#373737" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="lgc_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Body Color, used for body background color</th>
+                                    <th><input type="text" data-varid="--bodycolor" placeholder="Use css default" data-defvalue="#0d4208" value="#0d4208" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="bc_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Input Color, used primarily for inputs</th>
+                                    <th><input type="text" data-varid="--inputcolor" placeholder="Use css default" data-defvalue="rgba(44,187,99,.35)" value="rgba(44,187,99,.35)" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="ic_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Control Panel Color 1, used control panel bg</th>
+                                    <th><input type="text" data-varid="--contpanel-colone" placeholder="Use css default" data-defvalue="#212922" value="#212922" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="ic_clr"></th>
+                                </tr>
+                                <tr>
+                                    <th>Control Panel Color 2, used control panel bg</th>
+                                    <th><input type="text" data-varid="--contpanel-coltwo" placeholder="Use css default" data-defvalue="rgba(20, 55, 0, 0.7)" value="rgba(20, 55, 0, 0.7)" class="customstyle" onfocus="this.oldvalue = this.value;" onchange="settingChanged(this)"></th>
+                                    <th id="ic_clr"></th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="shares">
+                        <textarea readonly="readonly" id="shares_text" name="shares_text" rows="6" cols="150"></textarea>
+                        <label id="shares_l" class="length_txt newline" for="DecoyMsg"></label>
+                        <div>
+                            <label for="shares_var" >Share Settings</label>
+                            <button type="button" id="shares_b" onclick="settingChanged(this)">Share</button>
+                            <span data-text="Generate a link so you can easily share this page with the exact settings you have" class="tooltip">?</span>
+                            <button type="button" id="copy_shares" onclick="copytext('shares_text')" disabled>Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" id="emergency_sr" onclick="changetheme('reset');">Reset Theme</button>
+        <textarea readonly="readonly" id="uid_storage" name="uid_storage" rows="1" cols="10"></textarea>
+        <!-- The Modal/popup info box -->
+        <div class="infobox_container">
+            <!-- Here is the hidden checkbox element which makes toggling the modal work -->
+            <input type="checkbox" id="infobox-t" class="infobox_toggler"  />
+            <!-- Here is the background mask. When clicked, it closes the modal. Change this to a div to disable that functionality. -->
+            <label class="infobox_mask" for="infobox-t"></label>
+            <div class="infobox">
+                <label class="infobox_close" for="infobox-t"></label>
+                <div class="infobox_content">
+                    <h1 class="infobox_title" id="infobox-title">Title</h1>
+                    <p>You can click anywhere outside this window to close it.</p>
+                    <p id="infobox-first">Text1</p>
+                    <p id="infobox-second">Text2</p>
+                    <button class="button" onclick="hidemsg()" id="infobox-btn">Close</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
