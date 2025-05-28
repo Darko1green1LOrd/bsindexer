@@ -59,15 +59,16 @@ function setup_ChangeDetectors(){
 
 var name_nums = [];
 var voice_nums = [];
+var emo_nums = [];
 function process_data(){
     for (var i = 0; i < char_Names.length; i++) {
         name_nums.push(char_Names[i][1]);
     }
     for (var i = 0; i < char_voices.length; i++) {
-        voice_nums.push(char_Names[i][1])
+        voice_nums.push(char_voices[i][1])
     }
 
-    var input_fields = ["char_ind_inp","hat_ind_inp","acce_ind_inp","name_ind_inp","voice_ind_inp","pfp_ind_inp"];
+    var input_fields = ["char_ind_inp","hat_ind_inp","acce_ind_inp","name_ind_inp","voice_ind_inp","pfp_ind_inp","emo_ind_inp"];
     for (var i = 0; i < input_fields.length; i++) {
         process_index(ge(input_fields[i]));
     }
@@ -237,6 +238,14 @@ function setup_savedata(){
             "t_settingChanged": true,
             "min": ge("pfp_ind_inp").min,
             "default": ge("pfp_ind_inp").dataset.defvalue
+        },
+        "emoinp":{
+            "value_type": "num",
+            "elem": ge("emo_ind_inp"),
+            "type": "inputbox",
+            "t_settingChanged": true,
+            "min": ge("emo_ind_inp").min,
+            "default": ge("emo_ind_inp").dataset.defvalue
         }
     }
 }
@@ -692,6 +701,9 @@ function process_index(inp){
                 if (values.includes(inp_value)){
                     return_value = keys[values.indexOf(inp_value)];
                 }
+                break;
+            case "emo":
+                return_value = emojis[inp_value];
                 break;
         }
         if (typeof return_value == "undefined"){return_value = "";}
