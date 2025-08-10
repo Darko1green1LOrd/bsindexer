@@ -1098,7 +1098,15 @@ const char_Names = [
     ["BAGELS",756],
     ["PEPPERPLAYZ",757],
     ["PLAYZ",758],
-    ["KOHLSLAW",759]
+    ["KOHLSLAW",759],
+    ["JOGA",760],
+    ["VELHOTE",761],
+    ["NOVOTTE",762],
+    ["JVNQ",763],
+    ["MOONKASE",764],
+    ["VACIUKS",765],
+    ["RELANCY",766],
+    ["DIKA",767]
     ]
 const char_voices = [
     ["Fart",1],
