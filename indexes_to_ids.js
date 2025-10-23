@@ -136,8 +136,10 @@ const Characters_all = [
     "134_goldenicecream",
     "135_Mörri",
     "136_DiamonPenguin",
-    "137_mushroom"
-    ]
+    "137_mushroom",
+    "138_NewPumpkin",
+    "139_DiamondFrog"
+]
 const char_Hats = {
     "001_Fish":1,
     "002_Squid":2,
@@ -272,7 +274,7 @@ const char_Hats = {
     "131_DrFrankenFoot":131,
     "132_CandyBowl":132,
     "133_CandyCorn":133
-    }
+}
 const char_Accesories = {
     "001_Sunglasses":1,
     "002_Stache":2,
@@ -338,7 +340,7 @@ const char_Accesories = {
     "62_animeyes":62,
     "63_toast":63,
     "064_ghoulEyes":64
-    }
+}
 const char_Names = [
     ["LINCOLN",1],
     ["BABY",2],
@@ -1124,7 +1126,7 @@ const char_voices = [
     ["Caveman",13],
     ["Zombie",14],
     ["Dog",15]
-    ]
+]
 const profile_pictures = {
     "Blue Skull":0,
     "Jello":1,
